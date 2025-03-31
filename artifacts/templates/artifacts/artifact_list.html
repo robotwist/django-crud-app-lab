@@ -1,0 +1,16 @@
+<!-- artifacts/templates/artifacts/artifact_list.html -->
+<h1>🗿 Artifact Archive</h1>
+
+<a href="{% url 'artifact_create' %}">+ Add New Artifact</a>
+
+<ul>
+  {% for artifact in artifacts %}
+    <li>
+      <strong><a href="{% url 'artifact_detail' artifact.pk %}">{{ artifact.title }}</a></strong>
+      — <a href="{% url 'artifact_update' artifact.pk %}">Edit</a>
+      | <a href="{% url 'artifact_delete' artifact.pk %}">Delete</a>
+    </li>
+  {% empty %}
+    <li>No artifacts yet. The monolith sleeps...</li>
+  {% endfor %}
+</ul>

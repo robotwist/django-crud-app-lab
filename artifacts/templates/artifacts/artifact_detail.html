@@ -1,0 +1,12 @@
+
+<h1>{{ artifact.title }}</h1>
+<p>{{ artifact.description }}</p>
+
+<p><strong>Popularity Score:</strong> {{ artifact.popularity_score }}</p>
+
+<form action="{% url 'artifact_like' artifact.pk %}" method="post">
+  {% csrf_token %}
+  <button type="submit">👍 Like this artifact</button>
+</form>
+
+<p><a href="{% url 'artifact_list' %}">← Back to All Artifacts</a></p>

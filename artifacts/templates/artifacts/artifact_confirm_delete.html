@@ -1,0 +1,11 @@
+<!-- artifacts/templates/artifacts/artifact_confirm_delete.html -->
+<h1>Delete Artifact</h1>
+
+<p>Are you sure you want to delete "{{ artifact.title }}"?</p>
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">Yes, delete it forever</button>
+</form>
+
+<a href="{% url 'artifact_detail' artifact.pk %}">← Cancel</a>

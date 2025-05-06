@@ -1,0 +1,353 @@
+/* Analog-inspired form styling */
+/* Import Google Fonts as fallbacks */
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600&family=DM+Serif+Display&family=Roboto+Mono:wght@700&display=swap');
+
+/* Custom font declarations - commented out and using Google Fonts as replacements */
+/*
+@font-face {
+  font-family: 'Barry';
+  src: url('../fonts/Barry.woff2') format('woff2'),
+       url('../fonts/Barry.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Kabel Black';
+  src: url('../fonts/KabelBlack.woff2') format('woff2'),
+       url('../fonts/KabelBlack.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Friz Quadrata';
+  src: url('../fonts/FrizQuadrata.woff2') format('woff2'),
+       url('../fonts/FrizQuadrata.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+*/
+
+/* Fallback fonts using Google Fonts */
+:root {
+  --font-barry: 'DM Serif Display', 'Georgia', serif;
+  --font-kabel: 'Roboto Mono', 'Arial Black', sans-serif;
+  --font-friz: 'Crimson Pro', 'Palatino', serif;
+  
+  --color-grey: #8c8c8c;
+  --color-dark-grey: #333333;
+  --color-navy: #1a2642;
+  --color-black: #151515;
+  --color-blue: #0055b7;
+  
+  --form-bg: #f0f0f0;
+  --input-bg: #e0e0e0;
+}
+
+/* Vintage Overlay Effect */
+body {
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    repeating-linear-gradient(
+      transparent, 
+      transparent 4px, 
+      rgba(0, 0, 0, 0.02) 4px, 
+      rgba(0, 0, 0, 0.02) 5px
+    );
+  pointer-events: none;
+  z-index: 9999; /* Ensure it's on top of everything */
+}
+
+.analog-container {
+  background-color: var(--form-bg);
+  /* Using a CSS texture instead of an image */
+  background-image: 
+    linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px),
+    linear-gradient(rgba(0,0,0,.05), rgba(0,0,0,.05));
+  background-size: 20px 20px, 20px 20px, cover;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 
+              inset 0 0 0 1px var(--color-dark-grey);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Vintage border style */
+.analog-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(to right, var(--color-navy), var(--color-dark-grey));
+}
+
+/* Worn edge effect */
+.analog-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.02),
+    rgba(0, 0, 0, 0.02) 2px,
+    transparent 2px,
+    transparent 8px
+  );
+  pointer-events: none;
+  z-index: 1;
+  border-radius: 8px;
+}
+
+.analog-title {
+  font-family: var(--font-kabel);
+  color: var(--color-navy);
+  margin-bottom: 30px;
+  letter-spacing: 1px;
+  font-size: 32px;
+  text-transform: uppercase;
+  position: relative;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--color-dark-grey);
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.1);
+}
+
+.analog-archive {
+  font-family: var(--font-barry);
+  color: var(--color-blue);
+  font-size: 22px;
+  letter-spacing: 1.5px;
+  margin-top: 5px;
+  display: block;
+  position: relative;
+  text-align: right;
+  transform: rotate(-2deg);
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.8);
+}
+
+/* Divider styles */
+.analog-form .form-group {
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.analog-form .form-group:not(:last-child)::after {
+  content: "";
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--color-grey), transparent);
+  width: 100%;
+  position: absolute;
+  bottom: -12px;
+  left: 0;
+}
+
+.analog-form label {
+  font-family: var(--font-friz);
+  color: var(--color-dark-grey);
+  display: block;
+  margin-bottom: 8px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.analog-form input[type="text"],
+.analog-form input[type="file"],
+.analog-form textarea,
+.analog-form select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid var(--color-grey);
+  border-radius: 4px;
+  background-color: var(--input-bg);
+  color: var(--color-black);
+  font-family: var(--font-friz);
+  font-size: 16px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.analog-form input[type="text"]:focus,
+.analog-form textarea:focus,
+.analog-form select:focus {
+  border-color: var(--color-navy);
+  outline: none;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1), 
+              0 0 0 2px rgba(26, 38, 66, 0.2);
+}
+
+.analog-form input[type="file"] {
+  padding: 10px;
+  background-color: var(--input-bg);
+  color: var(--color-black);
+  cursor: pointer;
+  border: 1px dashed var(--color-grey);
+}
+
+.analog-form input[type="file"]:hover {
+  border-color: var(--color-navy);
+  background-color: #e8e8e8;
+}
+
+/* File input custom styling */
+.analog-form input[type="file"]::file-selector-button {
+  font-family: var(--font-kabel);
+  padding: 8px 16px;
+  background: var(--color-navy);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.analog-form input[type="file"]::file-selector-button:hover {
+  background: #263555;
+}
+
+.analog-form .help-text {
+  font-family: var(--font-friz);
+  font-size: 14px;
+  color: var(--color-grey);
+  margin-top: 6px;
+  font-style: italic;
+}
+
+.analog-form .error-message {
+  font-family: var(--font-friz);
+  color: #bf0000;
+  font-size: 14px;
+  margin-top: 6px;
+  font-weight: 600;
+}
+
+.analog-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+  position: relative;
+  z-index: 2;
+}
+
+.analog-btn {
+  font-family: var(--font-kabel);
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.analog-btn-primary {
+  background-color: var(--color-navy);
+  color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.analog-btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, 
+                             rgba(255,255,255,0.2) 0%, 
+                             rgba(255,255,255,0) 50%, 
+                             rgba(0,0,0,0.1) 100%);
+  pointer-events: none;
+}
+
+.analog-btn-primary:hover {
+  background-color: #263555;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.analog-btn-secondary {
+  background-color: var(--color-grey);
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.analog-btn-secondary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, 
+                             rgba(255,255,255,0.2) 0%, 
+                             rgba(255,255,255,0) 50%, 
+                             rgba(0,0,0,0.1) 100%);
+  pointer-events: none;
+}
+
+.analog-btn-secondary:hover {
+  background-color: #777;
+}
+
+.analog-link {
+  font-family: var(--font-friz);
+  color: var(--color-navy);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  margin-top: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.analog-link:hover {
+  text-decoration: underline;
+}
+
+.analog-link:before {
+  content: '←';
+  margin-right: 8px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .analog-container {
+    padding: 20px;
+    margin: 10px;
+  }
+  
+  .analog-title {
+    font-size: 28px;
+  }
+  
+  .analog-buttons {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .analog-btn {
+    width: 100%;
+  }
+} 

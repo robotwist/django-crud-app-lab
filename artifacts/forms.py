@@ -3,13 +3,46 @@ from .models import Artifact, Comment, Category, Tag, UserPreference
 from core.forms import BaseModelForm, BaseForm
 
 class ArtifactForm(BaseModelForm):
-    tags = forms.CharField(required=False, help_text='Enter tags separated by commas')
+    tags = forms.CharField(
+        required=False, 
+        help_text='Enter tags separated by commas',
+        widget=forms.TextInput(attrs={
+            'class': 'analog-input',
+            'placeholder': 'vintage, rare, collectible, ...'
+        })
+    )
     
     class Meta:
         model = Artifact
         fields = ['title', 'description', 'image', 'category', 'tags']
         widgets = {
-            'description': forms.Textarea(attrs={'rows': 4}),
+            'title': forms.TextInput(attrs={
+                'class': 'analog-input',
+                'placeholder': 'Enter the name of your artifact'
+            }),
+            'description': forms.Textarea(attrs={
+                'rows': 4,
+                'class': 'analog-textarea',
+                'placeholder': 'Describe your artifact in detail...'
+            }),
+            'category': forms.Select(attrs={
+                'class': 'analog-select'
+            }),
+            'image': forms.FileInput(attrs={
+                'class': 'analog-file-input',
+                'accept': 'image/*'
+            })
+        }
+        labels = {
+            'title': 'Artifact Title',
+            'description': 'Artifact Description',
+            'image': 'Artifact Photograph',
+            'category': 'Artifact Category',
+            'tags': 'Artifact Tags'
+        }
+        help_texts = {
+            'description': 'Provide details about condition, history, and unique features.',
+            'image': 'Upload a clear image of your artifact.',
         }
     
     def __init__(self, *args, **kwargs):

@@ -1,10 +1,42 @@
 <!-- artifacts/templates/artifacts/artifact_form.html -->
-<h1>{% if form.instance.pk %}Edit{% else %}Create{% endif %} Artifact</h1>
+{% extends 'base.html' %}
+{% load static %}
 
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Save</button>
-</form>
+{% block title %}{% if form.instance.pk %}Edit{% else %}Create{% endif %} Artifact | Artifact Archive{% endblock %}
 
-<a href="{% url 'artifact_list' %}">← Cancel</a>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/analog_form.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="analog-container">
+  <h1 class="analog-title">
+    {% if form.instance.pk %}Edit{% else %}Create{% endif %} Artifact
+    <span class="analog-archive">Artifact Archive</span>
+  </h1>
+
+  <form method="post" enctype="multipart/form-data" class="analog-form">
+    {% csrf_token %}
+    
+    {% for field in form %}
+    <div class="form-group">
+      {{ field.label_tag }}
+      {{ field }}
+      {% if field.help_text %}
+      <div class="help-text">{{ field.help_text }}</div>
+      {% endif %}
+      {% if field.errors %}
+      <div class="error-message">{{ field.errors }}</div>
+      {% endif %}
+    </div>
+    {% endfor %}
+    
+    <div class="analog-buttons">
+      <button type="submit" class="analog-btn analog-btn-primary">Save Artifact</button>
+      <a href="{% url 'artifact_list' %}" class="analog-btn analog-btn-secondary">Cancel</a>
+    </div>
+  </form>
+  
+  <a href="{% url 'artifact_list' %}" class="analog-link">Back to Artifacts</a>
+</div>
+{% endblock %}

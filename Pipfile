@@ -4,7 +4,10 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "*"
+django-ckeditor = "==6.7.1"
+django-infinite-scroll-pagination = "==1.1.0"
+pilkit = "==3.0"
+six = "==1.16.0"
 
 [dev-packages]
 

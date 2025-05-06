@@ -1,16 +1,134 @@
 <!-- artifacts/templates/artifacts/artifact_list.html -->
-<h1>🗿 Artifact Archive</h1>
+{% extends 'base.html' %}
+{% load static %}
 
-<a href="{% url 'artifact_create' %}">+ Add New Artifact</a>
+{% block title %}Artifacts Feed{% endblock %}
 
-<ul>
-  {% for artifact in artifacts %}
-    <li>
-      <strong><a href="{% url 'artifact_detail' artifact.pk %}">{{ artifact.title }}</a></strong>
-      — <a href="{% url 'artifact_update' artifact.pk %}">Edit</a>
-      | <a href="{% url 'artifact_delete' artifact.pk %}">Delete</a>
-    </li>
-  {% empty %}
-    <li>No artifacts yet. The monolith sleeps...</li>
-  {% endfor %}
-</ul>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/artifacts.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="feed-header">
+        <h1>Artifact Feed</h1>
+        {% if user.is_authenticated %}
+            <a href="{% url 'artifact_create' %}" class="btn btn-primary">Create New Artifact</a>
+        {% endif %}
+    </div>
+
+    <div class="feed-filters">
+        <form method="get" class="search-form" id="artifact-search-form">
+            <div class="form-group">
+                <input type="text" name="search" class="form-control" placeholder="Search artifacts..." 
+                       value="{{ form.search.value|default:'' }}">
+            </div>
+            
+            <div class="form-group">
+                <select name="category" class="form-control">
+                    <option value="">All Categories</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}" 
+                                {% if form.category.value|stringformat:"s" == category.id|stringformat:"s" %}selected{% endif %}>
+                            {{ category.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <select name="sort" class="form-control">
+                    <option value="-created_at" {% if form.sort.value == '-created_at' %}selected{% endif %}>Newest First</option>
+                    <option value="created_at" {% if form.sort.value == 'created_at' %}selected{% endif %}>Oldest First</option>
+                    <option value="-views" {% if form.sort.value == '-views' %}selected{% endif %}>Most Viewed</option>
+                    <option value="-likes" {% if form.sort.value == '-likes' %}selected{% endif %}>Most Liked</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Apply Filters</button>
+        </form>
+    </div>
+
+    <div class="artifact-list" id="artifact-list">
+        {% include 'artifacts/includes/artifact_list_items.html' %}
+    </div>
+
+    <div class="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let loading = false;
+    const artifactList = document.getElementById('artifact-list');
+    const loadingSpinner = document.querySelector('.loading-spinner');
+
+    function loadMoreArtifacts(page) {
+        if (loading) return;
+        loading = true;
+        loadingSpinner.style.display = 'block';
+
+        const searchForm = document.getElementById('artifact-search-form');
+        const formData = new FormData(searchForm);
+        formData.append('page', page);
+
+        const queryString = new URLSearchParams(formData).toString();
+        
+        fetch(`?${queryString}`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.text())
+        .then(html => {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+            
+            const newArtifacts = tempDiv.querySelector('#artifact-list').innerHTML;
+            artifactList.insertAdjacentHTML('beforeend', newArtifacts);
+            
+            loading = false;
+            loadingSpinner.style.display = 'none';
+            
+            // Update or remove the load more button
+            const oldLoadMore = artifactList.querySelector('.load-more');
+            if (oldLoadMore) oldLoadMore.remove();
+            
+            const newLoadMore = tempDiv.querySelector('.load-more');
+            if (newLoadMore) {
+                artifactList.appendChild(newLoadMore);
+            }
+        })
+        .catch(error => {
+            console.error('Error loading more artifacts:', error);
+            loading = false;
+            loadingSpinner.style.display = 'none';
+        });
+    }
+
+    // Infinite scroll
+    window.addEventListener('scroll', () => {
+        const loadMoreBtn = document.querySelector('.load-more button');
+        if (!loadMoreBtn) return;
+
+        const rect = loadMoreBtn.getBoundingClientRect();
+        if (rect.top <= window.innerHeight + 100) {
+            const nextPage = loadMoreBtn.dataset.page;
+            loadMoreArtifacts(nextPage);
+        }
+    });
+
+    // Click handler for load more button
+    artifactList.addEventListener('click', (e) => {
+        if (e.target.matches('.load-more button')) {
+            e.preventDefault();
+            const nextPage = e.target.dataset.page;
+            loadMoreArtifacts(nextPage);
+        }
+    });
+});
+</script>
+{% endblock %}

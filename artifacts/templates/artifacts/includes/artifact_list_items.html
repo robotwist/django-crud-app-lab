@@ -1,0 +1,67 @@
+{% load static %}
+{% for artifact in artifacts %}
+<div class="artifact-card">
+    <div class="artifact-header">
+        <div class="user-info">
+            {% if artifact.user.profile.avatar %}
+                <img src="{{ artifact.user.profile.avatar.url }}" alt="{{ artifact.user.username }}" class="user-avatar">
+            {% else %}
+                <img src="{% static 'images/default-avatar.png' %}" alt="{% if artifact.user %}{{ artifact.user.username }}{% else %}Anonymous{% endif %}" class="user-avatar">
+            {% endif %}
+            <div class="user-details">
+                {% if artifact.user %}
+                    <a href="{% url 'user_profile' artifact.user.username %}" class="username">{{ artifact.user.username }}</a>
+                {% else %}
+                    <span class="username">Anonymous</span>
+                {% endif %}
+                <span class="timestamp">{{ artifact.created_at|timesince }} ago</span>
+            </div>
+        </div>
+        <div class="artifact-actions">
+            {% if user.is_authenticated and user == artifact.user %}
+                <a href="{% url 'artifact_update' artifact.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                <a href="{% url 'artifact_delete' artifact.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if artifact.image %}
+        <img src="{{ artifact.image.url }}" alt="{{ artifact.title }}" class="artifact-image">
+    {% endif %}
+
+    <div class="artifact-content">
+        <a href="{% url 'artifact_detail' artifact.pk %}" class="artifact-title">{{ artifact.title }}</a>
+        <p class="artifact-description">{{ artifact.description|truncatewords:30 }}</p>
+
+        <div class="artifact-metadata">
+            {% if artifact.category %}
+                <span class="category-badge">{{ artifact.category.name }}</span>
+            {% endif %}
+            {% for tag in artifact.tags.all %}
+                <span class="tag">{{ tag.name }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="engagement-stats">
+            <span class="stat">
+                <i class="far fa-comment"></i>
+                {{ artifact.comments.count }} Comments
+            </span>
+            <span class="stat">
+                <i class="far fa-heart"></i>
+                {{ artifact.likes.count }} Likes
+            </span>
+            <span class="stat">
+                <i class="far fa-eye"></i>
+                {{ artifact.views }} Views
+            </span>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% if artifacts.has_next %}
+    <div class="load-more">
+        <button class="btn btn-primary" data-page="{{ artifacts.next_page_number }}">Load More</button>
+    </div>
+{% endif %} 

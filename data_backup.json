@@ -1,0 +1,126 @@
+[
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2025-03-31T04:20:12.554Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "1",
+    "object_repr": "The Best Artifact on Earth",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2025-03-31T04:20:29.814Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "1",
+    "object_repr": "The Best Artifact on Earth",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2025-03-31T04:36:52.213Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "2",
+    "object_repr": "Manufacturing",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2025-03-31T04:37:06.524Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "2",
+    "object_repr": "Manufacturing Consent",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Title\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2025-03-31T05:31:10.987Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "3",
+    "object_repr": "The Third Man",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$K2lUeKei4wZKuA5Ed16HP0$8HdznC75KC/KQW8vFBbczrbWRYStQ3Uo6RVcwdgENoo=",
+    "last_login": "2025-03-31T02:56:55.832Z",
+    "is_superuser": true,
+    "username": "robwistrand",
+    "first_name": "",
+    "last_name": "",
+    "email": "robwistrand@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-03-31T02:49:36.069Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "jj2vm3j2lfuqxi33i1qbfiqzfd33rfqy",
+  "fields": {
+    "session_data": ".eJxVjDkOwjAQAP_iGllxfGFK-rwh2ss4gBwpR4X4O1hKAe3MaF5qhH0r477KMk6sLsqo0y9DoIfUJvgO9TZrmuu2TKhbog-76mFmeV6P9m9QYC1tayxAtBwcS3LUsVjCGGIGH3zIHaCxmJFT31uKdBZhofTF3pLD5NX7A_4rOOg:1tz5KZ:9Z7Odi_XVQkz5YYTZeaz7n7-TgJh6fOR7epkR3Dqxsw",
+    "expire_date": "2025-04-14T02:56:55.833Z"
+  }
+},
+{
+  "model": "artifacts.artifact",
+  "pk": 1,
+  "fields": {
+    "title": "The Best Artifact on Earth",
+    "description": "It is actually pretty good.",
+    "popularity_score": 0,
+    "created_at": "2025-03-31T04:20:12.553Z",
+    "updated_at": "2025-03-31T04:20:29.813Z"
+  }
+},
+{
+  "model": "artifacts.artifact",
+  "pk": 2,
+  "fields": {
+    "title": "Manufacturing Consent",
+    "description": "consent and then stepping all over people.",
+    "popularity_score": 0,
+    "created_at": "2025-03-31T04:36:52.212Z",
+    "updated_at": "2025-03-31T04:37:06.524Z"
+  }
+},
+{
+  "model": "artifacts.artifact",
+  "pk": 3,
+  "fields": {
+    "title": "The Third Man",
+    "description": "It is a movie that has Harry Lime and he got shot.",
+    "popularity_score": 2,
+    "created_at": "2025-03-31T05:31:10.987Z",
+    "updated_at": "2025-03-31T05:31:10.987Z"
+  }
+}
+]

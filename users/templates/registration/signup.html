@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign Up - Artifact Archive{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-box">
+        <h1>Sign Up</h1>
+        <form method="post" class="auth-form">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.help_text %}
+                <small class="help-text">{{ field.help_text }}</small>
+                {% endif %}
+                {% if field.errors %}
+                <div class="error-text">
+                    {% for error in field.errors %}
+                    {{ error }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+        </form>
+        <div class="auth-links">
+            <a href="{% url 'login' %}">Already have an account? Log in</a>
+        </div>
+    </div>
+</div>
+
+<style>
+.auth-container {
+    max-width: 500px;
+    margin: 2rem auto;
+}
+
+.auth-box {
+    background: white;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.auth-form .form-group {
+    margin-bottom: 1rem;
+}
+
+.auth-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.auth-links {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.help-text {
+    display: block;
+    color: #666;
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+}
+
+.error-text {
+    color: #e74c3c;
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+}
+
+.separator {
+    margin: 0 0.5rem;
+    color: #999;
+}
+</style>
+{% endblock %} 

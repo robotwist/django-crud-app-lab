@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="feed-container">
+    <h1>Your Personal Feed</h1>
+    
+    <div class="feed-header">
+        <p class="feed-description">
+            A chronological feed of artifacts from people you follow, excluding content you've chosen not to see.
+        </p>
+        <div class="feed-actions">
+            <a href="{% url 'artifact_create' %}" class="btn">+ Share New Artifact</a>
+        </div>
+    </div>
+
+    <div class="artifact-feed">
+        {% for artifact in artifacts %}
+        <article class="feed-item">
+            <div class="feed-item-header">
+                <div class="user-info">
+                    <strong>{{ artifact.user.username }}</strong>
+                    <span class="timestamp">{{ artifact.created_at|timesince }} ago</span>
+                </div>
+                {% if artifact.user == request.user %}
+                <div class="item-actions">
+                    <a href="{% url 'artifact_update' artifact.pk %}" class="btn btn-small">Edit</a>
+                    <a href="{% url 'artifact_delete' artifact.pk %}" class="btn btn-small btn-danger">Delete</a>
+                </div>
+                {% endif %}
+            </div>
+
+            <h2 class="feed-item-title">
+                <a href="{% url 'artifact_detail' artifact.pk %}">{{ artifact.title }}</a>
+            </h2>
+
+            {% if artifact.image %}
+            <div class="feed-item-image">
+                <img src="{{ artifact.image.url }}" alt="{{ artifact.title }}">
+            </div>
+            {% endif %}
+
+            <div class="feed-item-content">
+                <p>{{ artifact.description|truncatewords:50 }}</p>
+            </div>
+
+            <div class="feed-item-meta">
+                {% if artifact.category %}
+                <span class="category">{{ artifact.category.name }}</span>
+                {% endif %}
+                
+                {% if artifact.tags.all %}
+                <div class="tags">
+                    {% for tag in artifact.tags.all %}
+                    <span class="tag">{{ tag.name }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                <div class="engagement">
+                    <span class="likes">👍 {{ artifact.popularity_score }}</span>
+                    <span class="comments">💬 {{ artifact.comments.count }}</span>
+                </div>
+            </div>
+        </article>
+        {% empty %}
+        <div class="empty-feed">
+            <p>No artifacts in your feed yet! Start by following some users or creating your own artifact.</p>
+            <a href="{% url 'artifact_create' %}" class="btn">Create Your First Artifact</a>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if artifacts.has_other_pages %}
+    <div class="pagination">
+        {% if artifacts.has_previous %}
+        <a href="?page={{ artifacts.previous_page_number }}" class="btn">Previous</a>
+        {% endif %}
+        
+        <span class="current-page">
+            Page {{ artifacts.number }} of {{ artifacts.paginator.num_pages }}
+        </span>
+        
+        {% if artifacts.has_next %}
+        <a href="?page={{ artifacts.next_page_number }}" class="btn">Next</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .feed-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .feed-header {
+        margin-bottom: 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .feed-description {
+        color: #666;
+        font-size: 1.1em;
+        margin: 0;
+    }
+
+    .feed-item {
+        background: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .feed-item-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .timestamp {
+        color: #666;
+        font-size: 0.9em;
+    }
+
+    .feed-item-title {
+        margin: 0 0 1rem 0;
+    }
+
+    .feed-item-title a {
+        color: #2c3e50;
+        text-decoration: none;
+    }
+
+    .feed-item-image {
+        margin: 1rem 0;
+    }
+
+    .feed-item-image img {
+        max-width: 100%;
+        border-radius: 4px;
+    }
+
+    .feed-item-content {
+        margin: 1rem 0;
+    }
+
+    .feed-item-meta {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #eee;
+    }
+
+    .category {
+        background: #e9ecef;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.9em;
+    }
+
+    .tags {
+        display: flex;
+        gap: 8px;
+    }
+
+    .tag {
+        background: #f8f9fa;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.9em;
+    }
+
+    .engagement {
+        margin-left: auto;
+        display: flex;
+        gap: 1rem;
+    }
+
+    .btn-small {
+        padding: 4px 8px;
+        font-size: 0.9em;
+    }
+
+    .empty-feed {
+        text-align: center;
+        padding: 3rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .current-page {
+        color: #666;
+    }
+</style>
+{% endblock %} 

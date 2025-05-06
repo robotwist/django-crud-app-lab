@@ -16,8 +16,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),  # Authentication URLs
+    path('users/', include('users.urls', namespace='users')),  # Include users app URLs
+    path('messages/', include('user_messages.urls', namespace='messages')),  # Messaging system
+    path('trading/', include('trading.urls', namespace='trading')),  # Trading and marketplace
     path('', include('artifacts.urls')),
-]
+    path("ckeditor5/", include('django_ckeditor_5.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

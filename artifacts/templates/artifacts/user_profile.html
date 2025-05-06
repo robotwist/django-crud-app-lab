@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="profile-info">
+            <h1>{{ profile_user.username }}</h1>
+            {% if preferences.bio %}
+            <p class="bio">{{ preferences.bio }}</p>
+            {% endif %}
+            {% if preferences.website %}
+            <a href="{{ preferences.website }}" class="website" target="_blank" rel="noopener noreferrer">
+                🌐 {{ preferences.website }}
+            </a>
+            {% endif %}
+        </div>
+
+        <div class="profile-stats">
+            <div class="stat">
+                <span class="count">{{ artifacts_count }}</span>
+                <span class="label">Artifacts</span>
+            </div>
+            <div class="stat">
+                <span class="count">{{ followers_count }}</span>
+                <span class="label">Followers</span>
+            </div>
+            <div class="stat">
+                <span class="count">{{ following_count }}</span>
+                <span class="label">Following</span>
+            </div>
+        </div>
+
+        {% if request.user != profile_user %}
+        <div class="profile-actions">
+            {% if is_following %}
+            <form action="{% url 'unfollow_user' profile_user.username %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline">Unfollow</button>
+            </form>
+            {% else %}
+            <form action="{% url 'follow_user' profile_user.username %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn">Follow</button>
+            </form>
+            {% endif %}
+
+            {% if is_blocking %}
+            <form action="{% url 'unblock_user' profile_user.username %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline btn-danger">Unblock</button>
+            </form>
+            {% else %}
+            <form action="{% url 'block_user' profile_user.username %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Block</button>
+            </form>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="profile-content">
+        <h2>Artifacts by {{ profile_user.username }}</h2>
+        
+        <div class="artifact-grid">
+            {% for artifact in artifacts %}
+            <article class="artifact-card">
+                <div class="artifact-card-header">
+                    <h3><a href="{% url 'artifact_detail' artifact.pk %}">{{ artifact.title }}</a></h3>
+                    <span class="timestamp">{{ artifact.created_at|timesince }} ago</span>
+                </div>
+
+                {% if artifact.image %}
+                <div class="artifact-card-image">
+                    <img src="{{ artifact.image.url }}" alt="{{ artifact.title }}">
+                </div>
+                {% endif %}
+
+                <div class="artifact-card-content">
+                    <p>{{ artifact.description|truncatewords:30 }}</p>
+                </div>
+
+                <div class="artifact-card-meta">
+                    {% if artifact.category %}
+                    <span class="category">{{ artifact.category.name }}</span>
+                    {% endif %}
+                    
+                    <div class="engagement">
+                        <span class="likes">👍 {{ artifact.popularity_score }}</span>
+                        <span class="comments">💬 {{ artifact.comments.count }}</span>
+                    </div>
+                </div>
+            </article>
+            {% empty %}
+            <p class="no-artifacts">No artifacts yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .profile-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .profile-header {
+        background: white;
+        border-radius: 8px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .profile-info h1 {
+        margin: 0 0 1rem 0;
+        color: #2c3e50;
+    }
+
+    .bio {
+        color: #666;
+        margin-bottom: 1rem;
+    }
+
+    .website {
+        color: #3498db;
+        text-decoration: none;
+    }
+
+    .profile-stats {
+        display: flex;
+        gap: 2rem;
+        margin: 1.5rem 0;
+    }
+
+    .stat {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .count {
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #2c3e50;
+    }
+
+    .label {
+        color: #666;
+        font-size: 0.9em;
+    }
+
+    .profile-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+
+    .btn-outline {
+        background: transparent;
+        border: 2px solid #3498db;
+        color: #3498db;
+    }
+
+    .btn-outline:hover {
+        background: #3498db;
+        color: white;
+    }
+
+    .artifact-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .artifact-card {
+        background: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .artifact-card-header {
+        margin-bottom: 1rem;
+    }
+
+    .artifact-card-header h3 {
+        margin: 0;
+    }
+
+    .artifact-card-header a {
+        color: #2c3e50;
+        text-decoration: none;
+    }
+
+    .artifact-card-image {
+        margin: 1rem 0;
+    }
+
+    .artifact-card-image img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+
+    .artifact-card-content {
+        margin: 1rem 0;
+    }
+
+    .artifact-card-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #eee;
+    }
+
+    .no-artifacts {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 2rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+</style>
+{% endblock %} 

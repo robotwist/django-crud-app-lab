@@ -1,12 +1,126 @@
+{% extends 'base.html' %}
 
-<h1>{{ artifact.title }}</h1>
-<p>{{ artifact.description }}</p>
+{% block content %}
+<div class="artifact-detail">
+    <h1>{{ artifact.title }}</h1>
+    
+    {% if artifact.image %}
+    <div class="artifact-image">
+        <img src="{{ artifact.image.url }}" alt="{{ artifact.title }}">
+    </div>
+    {% endif %}
+    
+    <div class="artifact-meta">
+        {% if artifact.category %}
+        <span class="category">Category: {{ artifact.category.name }}</span>
+        {% endif %}
+        
+        {% if artifact.tags.all %}
+        <div class="tags">
+            Tags:
+            {% for tag in artifact.tags.all %}
+            <span class="tag">{{ tag.name }}</span>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <div class="dates">
+            <p>Created: {{ artifact.created_at|date:"F j, Y" }}</p>
+            <p>Last updated: {{ artifact.updated_at|date:"F j, Y" }}</p>
+        </div>
+    </div>
 
-<p><strong>Popularity Score:</strong> {{ artifact.popularity_score }}</p>
+    <div class="artifact-content">
+        <h2>Description</h2>
+        <p>{{ artifact.description }}</p>
+    </div>
 
-<form action="{% url 'artifact_like' artifact.pk %}" method="post">
-  {% csrf_token %}
-  <button type="submit">👍 Like this artifact</button>
-</form>
+    <div class="popularity">
+        <p><strong>Popularity Score:</strong> {{ artifact.popularity_score }}</p>
+        <form action="{% url 'artifact_like' artifact.pk %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn">👍 Like this artifact</button>
+        </form>
+    </div>
 
-<p><a href="{% url 'artifact_list' %}">← Back to All Artifacts</a></p>
+    <div class="artifact-actions" style="margin: 2rem 0;">
+        <a href="{% url 'artifact_update' artifact.pk %}" class="btn">Edit</a>
+        <a href="{% url 'artifact_delete' artifact.pk %}" class="btn btn-danger">Delete</a>
+        <a href="{% url 'artifact_list' %}" class="btn">← Back to All Artifacts</a>
+    </div>
+
+    <div class="comments-section">
+        <h2>Comments</h2>
+        
+        <form method="post" class="comment-form">
+            {% csrf_token %}
+            {{ comment_form.as_p }}
+            <button type="submit" class="btn">Add Comment</button>
+        </form>
+
+        <div class="comments-list">
+            {% for comment in artifact.comments.all %}
+            <div class="comment">
+                <p class="comment-text">{{ comment.text }}</p>
+                <p class="comment-meta">Posted on {{ comment.created_at|date:"F j, Y" }}</p>
+            </div>
+            {% empty %}
+            <p>No comments yet. Be the first to comment!</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .artifact-detail {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    .artifact-image {
+        margin: 2rem 0;
+        text-align: center;
+    }
+    .artifact-image img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .artifact-meta {
+        background: #f8f9fa;
+        padding: 1rem;
+        border-radius: 4px;
+        margin: 1rem 0;
+    }
+    .tags {
+        margin: 1rem 0;
+    }
+    .tag {
+        display: inline-block;
+        background: #e9ecef;
+        padding: 0.2rem 0.6rem;
+        border-radius: 20px;
+        margin-right: 0.5rem;
+        font-size: 0.9em;
+    }
+    .comments-section {
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid #dee2e6;
+    }
+    .comment {
+        background: #f8f9fa;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+    }
+    .comment-meta {
+        color: #6c757d;
+        font-size: 0.9em;
+        margin-top: 0.5rem;
+    }
+    .comment-form {
+        margin-bottom: 2rem;
+    }
+</style>
+{% endblock %}

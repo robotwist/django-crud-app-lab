@@ -1,34 +1,44 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
-{% block title %}Sign Up - Artifact Archive{% endblock %}
+{% block title %}Sign Up - Monolith: Artifact Archive{% endblock %}
 
 {% block content %}
 <div class="auth-container">
-    <div class="auth-box">
-        <h1>Sign Up</h1>
-        <form method="post" class="auth-form">
-            {% csrf_token %}
-            {% for field in form %}
-            <div class="form-group">
-                {{ field.label_tag }}
-                {{ field }}
-                {% if field.help_text %}
-                <small class="help-text">{{ field.help_text }}</small>
-                {% endif %}
-                {% if field.errors %}
-                <div class="error-text">
-                    {% for error in field.errors %}
-                    {{ error }}
-                    {% endfor %}
-                </div>
-                {% endif %}
-            </div>
+    <h1>Create an Account</h1>
+    
+    <form method="post" class="auth-form">
+        {% csrf_token %}
+        
+        {% if form.non_field_errors %}
+        <div class="error-message">
+            {% for error in form.non_field_errors %}
+            <p>{{ error }}</p>
             {% endfor %}
-            <button type="submit" class="btn btn-primary">Sign Up</button>
-        </form>
-        <div class="auth-links">
-            <a href="{% url 'login' %}">Already have an account? Log in</a>
         </div>
+        {% endif %}
+        
+        {% for field in form %}
+        <div class="form-group">
+            {{ field.label_tag }}
+            {{ field }}
+            {% if field.help_text %}
+            <div class="help-text">{{ field.help_text }}</div>
+            {% endif %}
+            {% if field.errors %}
+            <div class="field-error">
+                {% for error in field.errors %}
+                <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+    </form>
+    
+    <div class="auth-links">
+        <p>Already have an account? <a href="{% url 'login' %}">Log In</a></p>
     </div>
 </div>
 

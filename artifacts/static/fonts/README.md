@@ -1,13 +1,13 @@
-# Fonts for Artifact Archive
+# Fonts for Monolith: Artifact Archive
 
-This directory is intended for font files used in the Artifact Archive application.
+This directory is intended for font files used in the Monolith: Artifact Archive application.
 
 ## Font Stack
 
 The application uses the following fonts for its analog appearance:
 
 1. **Barry** (Primary display font)
-   - Used for the "Artifact Archive" lettering
+   - Used for the "Monolith: Artifact Archive" lettering
    - Google Fonts replacement: DM Serif Display
 
 2. **Kabel Black** (Heading font)

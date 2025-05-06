@@ -2,7 +2,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}{% if form.instance.pk %}Edit{% else %}Create{% endif %} Artifact | Artifact Archive{% endblock %}
+{% block title %}{% if form.instance.pk %}Edit{% else %}Create{% endif %} Artifact | Monolith: Artifact Archive{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/analog_form.css' %}">
@@ -12,7 +12,7 @@
 <div class="analog-container">
   <h1 class="analog-title">
     {% if form.instance.pk %}Edit{% else %}Create{% endif %} Artifact
-    <span class="analog-archive">Artifact Archive</span>
+    <span class="analog-archive">Monolith: Artifact Archive</span>
   </h1>
 
   <form method="post" enctype="multipart/form-data" class="analog-form">

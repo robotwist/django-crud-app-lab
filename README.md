@@ -1,12 +1,12 @@
-# Artifact Archive
+# Monolith: Artifact Archive
 
 ## Purpose & Vision
 
-Artifact Archive is a dedicated platform for collectors, enthusiasts, and preservationists of analog artifacts in our increasingly digital world. The application serves as a digital repository and community space for documenting, preserving, and celebrating the cultural and historical significance of physical objects from the pre-digital era.
+Monolith: Artifact Archive is a dedicated platform for collectors, enthusiasts, and preservationists of analog artifacts in our increasingly digital world. The application serves as a digital repository and community space for documenting, preserving, and celebrating the cultural and historical significance of physical objects from the pre-digital era.
 
 ### Our Philosophy
 
-In an age of rapid digitization and virtual experiences, Artifact Archive stands firmly on the belief that physical artifacts hold unique value that transcends their digital representations. We believe that:
+In an age of rapid digitization and virtual experiences, Monolith: Artifact Archive stands firmly on the belief that physical artifacts hold unique value that transcends their digital representations. We believe that:
 
 1. **Tangible objects connect us to our history** in ways that digital experiences cannot replicate
 2. **The analog world deserves preservation and documentation** as a vital part of human cultural heritage
@@ -15,7 +15,7 @@ In an age of rapid digitization and virtual experiences, Artifact Archive stands
 
 ### Long-Term Purpose
 
-The long-term vision for Artifact Archive extends beyond being a simple catalog of items:
+The long-term vision for Monolith: Artifact Archive extends beyond being a simple catalog of items:
 
 #### 1. Cultural Preservation
 
@@ -65,8 +65,8 @@ While celebrating the analog, we use modern technology to enhance the preservati
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/artifact-archive.git
-   cd artifact-archive
+   git clone https://github.com/yourusername/monolith-artifact-archive.git
+   cd monolith-artifact-archive
    ```
 
 2. Install dependencies:

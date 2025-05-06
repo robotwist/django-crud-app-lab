@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Artifact Archive{% endblock %}</title>
+    <title>{% block title %}Monolith: Artifact Archive{% endblock %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     {% block extra_css %}{% endblock %}
@@ -12,7 +12,7 @@
 <body>
     <nav class="main-nav">
         <div class="nav-container">
-            <a href="{% url 'artifact_list' %}" class="nav-brand">Artifact Archive</a>
+            <a href="{% url 'artifact_list' %}" class="nav-brand">Monolith: Artifact Archive</a>
             <ul class="nav-links">
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'artifact_create' %}">Create Artifact</a></li>
@@ -43,7 +43,7 @@
 
     <footer class="main-footer">
         <div class="footer-container">
-            <p>&copy; {% now "Y" %} Artifact Archive. All rights reserved.</p>
+            <p>&copy; {% now "Y" %} Monolith: Artifact Archive. All rights reserved.</p>
         </div>
     </footer>
 
